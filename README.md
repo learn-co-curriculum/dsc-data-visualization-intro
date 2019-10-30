@@ -8,8 +8,8 @@ This lesson introduces data visualization using Python and the popular Matplotli
 ## Objectives
 You will be able to:
 * Use Matplotlib to create a scatter plot
+* Use Matplotlb to create a bar plot
 * Use Matplotlib to create a histogram
-* Interpret a histogram to gain insight about a distribution of data
 
 ## Matplotlib Plotting Library
 
