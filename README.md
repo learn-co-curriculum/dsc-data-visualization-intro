@@ -13,9 +13,9 @@ You will be able to:
 
 ## Matplotlib Plotting Library
 
-The Matplotlib plotting library provides a range of built in functions to start visualizing data with minimal effort. 
+The Matplotlib plotting library provides a range of built in functions to start visualizing data with minimal effort. Recall that a _library_ is a collection of code that allows you to perform many actions without having to write a ton of lines of code that does not come with Python.
 
-First, import `matplotlib`'s `pyplot` module (a module is a unit of prewritten code that you can use in your projects) into your working environment along with `numpy` (one of the most popular Python libraries for scientific computing) to create some sample data. You will see that importing the `pyplot` module from Matplotlib provides simple and agile creation of plots. 
+First, import `matplotlib`'s `pyplot` library. You don't fully have to understand this code right now, just remember that you need to run this line to introduce P You will see that importing the `pyplot` module from Matplotlib provides simple and agile creation of plots. 
 
 ```python
 import matplotlib.pyplot as plt
@@ -37,29 +37,28 @@ import matplotlib.pyplot as plt
 
 A scatter plot is a two-dimensional data visualization that uses individual data points to represent the values obtained for two different variables - one plotted along the x-axis and the other plotted along the y-axis. 
 
-Scatter plots are used when you want to show the relationship between two variables. Scatter plots are sometimes called correlation plots because they show how two variables are correlated. 
+Scatter plots are used when you want to show the relationship between two variables. Scatter plots are sometimes called correlation plots because they show how two variables are related. 
 
-For this example, you will use Python's `numpy` library to create sample data. The industry standard is to alias `numpy` as `np`. Since `numpy` is a specialized library for scientific computing, it is primarily used for performing numerical operations. Don't worry about all of the details surrounding `numpy` right now, it will be introduced formally later. For now, use [numpy's `linspace()` function](https://docs.scipy.org/doc/numpy-1.14.5/reference/generated/numpy.linspace.html) to quickly generate some dummy data for visualizations.
+Let's show how you can create scatter plots using our cities, population and areas lists and the `matplotlib` library.
 
 
 ```python
-# Import numpy to generate some dummy data
-import numpy as np
+cities = ["Buenos Aires", "Toronto", "Pyeongchang", "Marakesh", 
+          "Albuquerque", "Los Cabos", "Greenville", "Archipelago Sea"]
 
-# Generate an array x of 30 equally spaced data points on a line space of 0 - 10.
-x = np.linspace(0, 10, 30)
-# Calcuate sin(x) and save in a new array y
-y = np.sin(x)
+populations = [2891000, 2800000, 2581000, 928850, 559277, 287651, 84554, 60000] 
+
+areas = [4758, 2731, 3194, 200, 491, 3750, 68, 8300]
 ```
 
-Now that you have your data ready, create a scatter plot using the `plt.scatter()` function which takes in two lists and shows their relationship. You can optionally pass in extra parameters like `label` to provide information about what you are plotting, `plt.title()` for defining a title, and `plt.legend()` to add the label information to the plot in a legend. Finally, use the `plt.show()` function to display the plot.
+Now that you have your data ready, we'll create a scatter plot using the `plt.scatter()` function which takes in two lists `populations` and `areas` to shows their relationship. 
 
 
 ```python
-# Pass in x and y values with a label 
-plt.scatter(x, y, label = "Function: sin(x)" )
-plt.title('Scatter Plot in Matplotlib')
-plt.legend()
+# Pass in populations and areas in plt.scatter()
+
+plt.scatter(populations, areas)
+
 plt.show()
 ```
 
@@ -67,21 +66,25 @@ plt.show()
 ![png](index_files/index_5_0.png)
 
 
-In case you are wondering, the above plot shows a sine wave where the y-variable has a periodic dependence on the x-variable. You can customize the plot further to make it easier to read. First, provide some labels for both axes by using `plt.xlabel()` and `plt.ylabel()`. You can also change the size of the plot with `plt.figure(figsize=(a,b))`, where a and b specify the width and height of the plot in inches.
+Nice, that worked! Each dot on this plot represents one city, and shows their population size on the x-axis, and the area size on the y-axis. The plot looks good, but is pretty meaningless if you were to present this to someone who doesn't know about the context. It would be nice to label the x-axis and the y-axis in the plot. Additionally, it would be nice to give a title to the plot. 
+
+You can use 
+`plt.title()` 
+`plt.xlabel()`, and
+`plt.ylabel()` 
+to do so. Let's have a look.
 
 
 ```python
-# Set the figure size in inches
-plt.figure(figsize=(10,6))
+# Pass in populations and areas in plt.scatter()
 
-plt.scatter(x, y, label = "y = sin(x)" )
+plt.scatter(populations, areas) 
 
-# Set x and y axes labels
-plt.xlabel('X Values')
-plt.ylabel('Y Values')
+plt.title('Area vs Population scatter plot')
 
-plt.title('Scatter Plot in Matplotlib')
-plt.legend()
+plt.xlabel('population')
+plt.ylabel('area')
+
 plt.show()
 ```
 
@@ -89,9 +92,36 @@ plt.show()
 ![png](index_files/index_7_0.png)
 
 
-The nice thing is labels and other customizations that you see here are applicable to almost all kinds of plots in Matplotlib. 
+Now, let's take it even a little bit further by adding a legend, making the image bigger, and adding labels to the dots in the scatter plot.
 
-### Bar Graphs
+- To add a label, you can specify an argument "label" inside the `plt.scatter()`-function, using a string along with a separate line of code `plt.legend()`.
+- To change the image size, use `plt.figure(figsize=(a,b))`, where a and b specify the width and height of the plot in inches.
+- To add labels to your dots, you can use a **for loop**! You just learned about this in your last lesson and lab, and for loops already prove useful! This is definitely more advanced use of for loops (and of creating images), bur you can have a look at how it's done in the image below.
+
+
+```python
+# Pass in populations and areas in plt.scatter()
+
+plt.figure(figsize=(12,6))
+plt.scatter(populations, areas, label = "Cities" )
+
+plt.title('Area vs Population scatter plot', size = 12)
+plt.legend()
+
+plt.xlabel('population', size = 14) # we also changed the size of the axis labels!
+plt.ylabel('area', size = 14)       # we also changed the size of the axis labels!
+
+for i, city in enumerate(cities):
+    plt.annotate(city, (populations[i], areas[i]))
+    
+plt.show()
+```
+
+
+![png](index_files/index_9_0.png)
+
+
+## Bar Graphs
 
 Bar graphs (also called "bar charts") are one of the most common plot types for showing comparisons across data. Bar graphs allow comparisons across categories by presenting categorical data as rectangular bars with heights or lengths proportional to the values that they represent. One axis of the graph shows the specific categories being compared and the other axis represents a value scale. The bars can be plotted vertically or horizontally. When the bars are plotted vertically, it is usually referred to as a "column graph." Some examples of bar graphs are shown below.
 
@@ -100,44 +130,30 @@ Bar graphs (also called "bar charts") are one of the most common plot types for 
 
 Matplotlib features a number of handy plotting functions. Matplotlib's `.bar()` and `.barh()` functions can be used to draw constant width vertical and constant height horizontal bar graphs for a simple sequence of x, y values. 
 
-Now that you understand the concepts, try to generate some plots. To do this, first generate some data using functions from the `np.random` module. This is a specialized module for generating random numbers. Don't worry if the code seems unfamiliar now, the details of using `numpy` for generating random numbers will be covered in detail later.
+Now, plot a bar graph using the `cities` list along with the `areas` list
 
 
 ```python
-# Set seed for reproducibility
-np.random.seed(100)
+# Use the bar() function to create a plot using the above values of x and y. Add a legend.
 
-# Generate the x-axis variable as 10 categories using numpy's arange function
-x = np.arange(10)
+plt.figure(figsize=(14,6))
 
-# For y-axis, generate 10 random quantities
-y = np.random.randn(10)
-```
+plt.bar(cities, areas, label='Cities')
 
-Now, plot a bar graph using the above data.
-
-
-```python
-plt.figure(figsize=(10,6))
-
-# Use the bar() function to create a plot using the above values of x and y. Add a label.
-plt.bar(x, y, label='Sample Data')
-
-plt.xlabel('X Values - Categories')
-plt.ylabel('Y Values - Quantities')
+plt.xlabel('cities')
+plt.ylabel('area')
 
 plt.title('Bar Plot in Matplotlib')
 plt.legend()
 
-# Output the final plot
 plt.show()
 ```
 
 
-![png](index_files/index_11_0.png)
+![png](index_files/index_12_0.png)
 
 
-That bar graph above is useful because you can easily inspect the quantities in each category (0-10) and make informed decisions about how data are distributed across these categories. 
+That bar graph above is useful because you can easily compare area sizes for each city - which is especially useful as data grows!
 
 ##  Histograms 
 
@@ -159,70 +175,39 @@ You can use the `plt.hist()` function in matplotlib to draw a histogram while pa
 
 
 ```python
-# Set seed for reproducability
-np.random.seed(100)
+#Plot the population histogram with hist() function
 
-# Generate a data set of 200 retirement age values
-x = 5*np.random.randn(200) + 65
+plt.hist(populations, bins = 10, edgecolor= 'black')
 
-#Plot the histogram with hist() function
-plt.hist(x, bins = 10, edgecolor='black')
-
-plt.xlabel('Retirement Age')
+plt.xlabel('Population size')
 plt.ylabel('Frequency of Values')
-plt.title('Histograms in Matplotlib')
+plt.title('Histograms of Population Size')
 plt.show()
 ```
 
 
-![png](index_files/index_14_0.png)
+![png](index_files/index_15_0.png)
 
 
-Recall, the y-axis tells you how often a certain range of numbers appears in the data set. From the histogram, you can see that there are a lot of people who retire around 65. There are significantly fewer people who retire at 75 and even fewer people who retire at 50. 
+Recall, the y-axis tells you how often a certain range of numbers appears in the data set. From the histogram, you can see that in our small list of 8 city population sizes, there are a 3 smaller cities (size < 300,000), and a 2 really big cities (> 2,600,000). Note that histograms really become useful when you have more than 8 data points. 
 
 ### The `bins` Argument
 Say you want to change the range of values that define the groups of a histogram. You can optionally pass the `bins` argument to set the number of groups. In the plot above, the data have been separated into 10 groups. Check out what happens when you change the number of bins to 5:
 
 
 ```python
-plt.hist(x, bins=5, edgecolor='black')
-plt.xlabel('Retirement Age')
+plt.hist(populations, bins=5, edgecolor='black')
+plt.xlabel('Population size')
 plt.ylabel('Frequency of Values')
-plt.title('Histograms in Matplotlib')
+plt.title('Histograms of Population Size')
 plt.show()
 ```
 
 
-![png](index_files/index_16_0.png)
+![png](index_files/index_17_0.png)
 
 
-Note the scale of the y-axis and the width of the bars compared to the histogram using 10 bins. The granularity of the bins can be changed according to your specific analytical needs and the amount of data available. For example, if you had 50 data points, you would not want to use 500 bins.  
-
-For the final example, say you got a much larger data set of 10000 retirement ages.
-
-
-```python
-# Set seed for reproducability
-np.random.seed(100)
-
-# Generate a data set of 10000 retirement age values
-x = 5*np.random.randn(10000) + 65
-
-#Plot the distogram with hist() function
-plt.hist(x, bins=50, edgecolor="black")
-
-plt.xlabel('Retirement Age')
-plt.ylabel('Frequency of Values')
-plt.title('Histograms in Matplotlib')
-plt.show()
-```
-
-
-![png](index_files/index_18_0.png)
-
-
-Notice that the shape of the distribution begins to look more bell-shaped as the size of the data set increases. This is characteristic of an important distribution known as the "Normal" distribution which you will learn more about later.
-
+Note the scale of the y-axis and the width of the bars compared to the histogram using 10 bins. The granularity of the bins can be changed according to your specific analytical needs and the amount of data available. For example, if you had 50 data points, you would probably not want to use 500 bins. Just like we shouldn't really have used 10 bins with 8 data points. Remember, histograms will become more useful as the data gets bigger!
 
 ## Summary
 
